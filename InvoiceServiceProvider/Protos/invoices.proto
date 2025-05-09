@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+option csharp_namespace = "InvoiceServiceProvider";
+
+import "google/protobuf/Timestamp.proto";
+import "google/protobuf/empty.proto";
+
+package invoices;
+
+service InvoiceServiceContract {
+  rpc CreateInvoice (RequestCreateInvoice) returns (CreateInvoiceReply);
+  rpc GetInvoiceById (RequestInvoiceById) returns (RequestInvoiceByIdReply);
+  rpc GetAllInvoices (google.protobuf.Empty) returns (AllInvoicesReply);
+  rpc UpdateInvoice (Invoice) returns (UpdateInvoiceReply);
+  rpc DeleteInvoice (DeleteInvoiceByIdRequest) returns (DeleteInvoiceReply);
+}
+
+message Invoice {
+	string invoice_id = 1;
+	string booking_id = 2;
+    string first_name = 3;
+	string last_name = 4;
+    string phone_number = 5;
+	string address = 6;
+	string postal_code = 7;
+	string city = 8;
+	string event_name = 9;
+    google.protobuf.Timestamp event_date = 10;
+    double ticket_amount = 11;
+	double ticket_price = 12;
+    double total_price = 13;
+    google.protobuf.Timestamp booking_date = 14;
+	google.protobuf.Timestamp created_date = 15;
+    google.protobuf.Timestamp due_date = 16;
+	bool payed = 17;
+}
+
+message AllInvoicesReply {
+	bool succeeded = 1;
+	repeated Invoice all_invoices = 2;
+}
+
+message RequestCreateInvoice {
+	string booking_id = 1;
+	string first_name = 2;
+	string last_name = 3;
+    string phone_number = 4;
+	string address = 5;
+	string postal_code = 6;
+	string city = 7;
+	string event_name = 8;
+	google.protobuf.Timestamp event_date = 9;
+	double ticket_amount = 10;
+	double ticket_price = 11;
+    google.protobuf.Timestamp booking_date = 12;
+}
+
+message CreateInvoiceReply {
+  bool succeeded = 1;
+}
+
+message RequestInvoiceById {
+	string invoice_id = 1;
+}
+
+message RequestInvoiceByIdReply {
+	bool succeeded = 1;
+	Invoice invoice = 2;
+}
+
+message UpdateInvoiceReply {
+	bool succeeded = 1;
+}
+
+message DeleteInvoiceByIdRequest {
+	string invoice_id = 1;
+}
+
+message DeleteInvoiceReply {
+	bool succeeded = 1;
+}
