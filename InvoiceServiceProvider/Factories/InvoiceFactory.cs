@@ -51,7 +51,7 @@ namespace InvoiceServiceProvider.Factories
                 BookingDate = TimeStampFactory.ToTimeStamp(entity.BookingDate),
                 CreatedDate = TimeStampFactory.ToTimeStamp(entity.CreatedDate),
                 DueDate = TimeStampFactory.ToTimeStamp(entity.DueDate),
-                Paid = entity.paid
+                Paid = entity.Paid
             };
             return model;
         }
