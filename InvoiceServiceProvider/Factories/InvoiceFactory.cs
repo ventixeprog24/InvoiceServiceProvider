@@ -51,37 +51,10 @@ namespace InvoiceServiceProvider.Factories
                 BookingDate = TimeStampFactory.ToTimeStamp(entity.BookingDate),
                 CreatedDate = TimeStampFactory.ToTimeStamp(entity.CreatedDate),
                 DueDate = TimeStampFactory.ToTimeStamp(entity.DueDate),
-                Paid = entity.Paid
+                Paid = entity.Paid,
+                Active = entity.Active,
             };
             return model;
-        }
-
-        public static InvoiceEntity? ToUpdateInvoiceEntity(Invoice request)
-        {
-            if (request is null)
-                return null;
-
-            InvoiceEntity entity = new()
-            {
-                Id = request.InvoiceId,
-                BookingId = request.BookingId,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                PhoneNumber = request.PhoneNumber,
-                Address = request.Address,
-                PostalCode = request.PostalCode,
-                City = request.City,
-                EventName = request.EventName,
-                EventDate = TimeStampFactory.ToDateTime(request.EventDate),
-                TicketAmount = request.TicketAmount,
-                TicketPrice = request.TicketPrice,
-                TotalPrice = request.TotalPrice,
-                BookingDate = TimeStampFactory.ToDateTime(request.BookingDate),
-                CreatedDate = TimeStampFactory.ToDateTime(request.CreatedDate),
-                DueDate = TimeStampFactory.ToDateTime(request.DueDate),
-                Paid = request.Paid
-            };
-            return entity;
         }
     }
 }

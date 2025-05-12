@@ -59,18 +59,14 @@ namespace InvoiceServiceProvider.Services
             return new AllInvoicesReply { Succeeded = false };
         }
 
-        public override async Task<UpdateInvoiceReply> UpdateInvoice(Invoice request, ServerCallContext context)
+        public override async Task<UpdateInvoiceReply> UpdateInvoice(UpdatePaymentStatusRequest request, ServerCallContext context)
         {
             if (request is null)
                 return new UpdateInvoiceReply { Succeeded = false };
 
-            var invoiceEntity = InvoiceFactory.ToUpdateInvoiceEntity(request);
-            if (invoiceEntity is null)
-                return new UpdateInvoiceReply { Succeeded = false };
-
-            var updateResult = await _invoicesRepository.UpdateAsync(invoiceEntity);
-            return updateResult.Succeeded 
-                ? new UpdateInvoiceReply { Succeeded = true } 
+            var updateResult = await _invoicesRepository.UpdateAsync(request);
+            return updateResult.Succeeded
+                ? new UpdateInvoiceReply { Succeeded = true }
                 : new UpdateInvoiceReply { Succeeded = false };
         }
 

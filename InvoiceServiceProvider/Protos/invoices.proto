@@ -12,7 +12,7 @@ service InvoiceServiceContract {
   rpc GetInvoiceByInvoiceId (RequestInvoiceById) returns (RequestInvoiceByIdReply);
   rpc GetInvoiceByBookingId (RequestInvoiceById) returns (RequestInvoiceByIdReply);
   rpc GetAllInvoices (google.protobuf.Empty) returns (AllInvoicesReply);
-  rpc UpdateInvoice (Invoice) returns (UpdateInvoiceReply);
+  rpc UpdateInvoice (UpdatePaymentStatusRequest) returns (UpdateInvoiceReply);
   rpc DeleteInvoice (DeleteInvoiceByIdRequest) returns (DeleteInvoiceReply);
 }
 
@@ -34,6 +34,7 @@ message Invoice {
 	google.protobuf.Timestamp created_date = 15;
     google.protobuf.Timestamp due_date = 16;
 	bool paid = 17;
+	bool active = 18;
 }
 
 message AllInvoicesReply {
@@ -67,6 +68,11 @@ message RequestInvoiceById {
 message RequestInvoiceByIdReply {
 	bool succeeded = 1;
 	Invoice invoice = 2;
+}
+
+message UpdatePaymentStatusRequest {
+	string invoice_id = 1;
+	bool newPaymentStatus = 2;
 }
 
 message UpdateInvoiceReply {

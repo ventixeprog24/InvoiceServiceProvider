@@ -8,6 +8,6 @@ public interface IInvoicesRepository
     Task<MongoResult> GetInvoiceByInvoiceIdAsync(string id);
     Task<MongoResult> GetInvoiceByBookingIdAsync(string id);
     Task<MongoResult> GetAllAsync();
-    Task<MongoResult> UpdateAsync(InvoiceEntity invoice);
+    Task<MongoResult> UpdateAsync(UpdatePaymentStatusRequest request);
     Task<MongoResult> DeleteAsync(string id);
 }

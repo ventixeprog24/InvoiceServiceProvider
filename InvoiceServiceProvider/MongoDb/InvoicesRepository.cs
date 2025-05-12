@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using InvoiceServiceProvider.Dtos;
+using InvoiceServiceProvider.Factories;
 using MongoDB.Driver;
 
 namespace InvoiceServiceProvider.MongoDb
@@ -69,11 +70,18 @@ namespace InvoiceServiceProvider.MongoDb
             return new MongoResult { Succeeded = false };
         }
 
-        public async Task<MongoResult> UpdateAsync(InvoiceEntity invoice)
+        public async Task<MongoResult> UpdateAsync(UpdatePaymentStatusRequest request)
         {
             try
             {
-                var result = await _invoices.ReplaceOneAsync(i => i.Id == invoice.Id, invoice);
+
+                var invoiceToUpdate = await _invoices.Find(i => i.Id == request.InvoiceId).FirstOrDefaultAsync();
+                if (invoiceToUpdate is null)
+                    return new MongoResult { Succeeded = false };
+
+                invoiceToUpdate.Paid = request.NewPaymentStatus;
+
+                var result = await _invoices.ReplaceOneAsync(i => i.Id == request.InvoiceId, invoiceToUpdate);
                 if (result.IsAcknowledged && result.ModifiedCount > 0)
                     return new MongoResult { Succeeded = true };
             }
@@ -88,8 +96,14 @@ namespace InvoiceServiceProvider.MongoDb
         {
             try
             {
-                var result = await _invoices.DeleteOneAsync(i => i.Id == id);
-                if (result.IsAcknowledged && result.DeletedCount > 0)
+                var invoiceToUpdate = await _invoices.Find(i => i.Id == id).FirstOrDefaultAsync();
+                if (invoiceToUpdate is null)
+                    return new MongoResult { Succeeded = false };
+
+                invoiceToUpdate.Active = false;
+
+                var result = await _invoices.ReplaceOneAsync(i => i.Id == id, invoiceToUpdate);
+                if (result.IsAcknowledged && result.ModifiedCount > 0)
                     return new MongoResult { Succeeded = true };
             }
             catch (Exception ex)
