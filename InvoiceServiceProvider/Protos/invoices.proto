@@ -32,7 +32,7 @@ message Invoice {
     google.protobuf.Timestamp booking_date = 14;
 	google.protobuf.Timestamp created_date = 15;
     google.protobuf.Timestamp due_date = 16;
-	bool payed = 17;
+	bool paid = 17;
 }
 
 message AllInvoicesReply {

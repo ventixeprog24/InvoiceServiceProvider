@@ -20,6 +20,6 @@ namespace InvoiceServiceProvider.MongoDb
         public DateTime BookingDate { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public DateTime DueDate { get; set; } = DateTime.UtcNow.AddDays(7);
-        public bool Payed { get; set; } = false;
+        public bool Paid { get; set; } = false;
     }
 }
