@@ -22,12 +22,28 @@ namespace InvoiceServiceProvider.MongoDb
             }
         }
 
-        public async Task<MongoResult> GetInvoiceByIdAsync(string id)
+        public async Task<MongoResult> GetInvoiceByInvoiceIdAsync(string id)
         {
             try
             {
                 var invoice = await _invoices.Find(i => i.Id == id).FirstOrDefaultAsync();
                 return invoice is null 
+                    ? new MongoResult { Succeeded = false }
+                    : new MongoResult { Succeeded = true, Invoice = invoice };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return new MongoResult { Succeeded = false };
+            }
+        }
+
+        public async Task<MongoResult> GetInvoiceByBookingIdAsync(string id)
+        {
+            try
+            {
+                var invoice = await _invoices.Find(i => i.BookingId == id).FirstOrDefaultAsync();
+                return invoice is null
                     ? new MongoResult { Succeeded = false }
                     : new MongoResult { Succeeded = true, Invoice = invoice };
             }

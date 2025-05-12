@@ -20,9 +20,21 @@ namespace InvoiceServiceProvider.Services
                 ? new CreateInvoiceReply { Succeeded = true }
                 : new CreateInvoiceReply { Succeeded = false };
         }
-        public override async Task<RequestInvoiceByIdReply> GetInvoiceById(RequestInvoiceById request, ServerCallContext context)
+        public override async Task<RequestInvoiceByIdReply> GetInvoiceByInvoiceId(RequestInvoiceById request, ServerCallContext context)
         {
-            var result = await _invoicesRepository.GetInvoiceByIdAsync(request.InvoiceId);
+            var result = await _invoicesRepository.GetInvoiceByInvoiceIdAsync(request.Id);
+            if (!result.Succeeded)
+                return new RequestInvoiceByIdReply { Succeeded = false };
+
+            var invoiceModel = InvoiceFactory.ToInvoiceGrpcModel(result.Invoice!);
+            return invoiceModel is not null
+                ? new RequestInvoiceByIdReply { Succeeded = true, Invoice = invoiceModel }
+                : new RequestInvoiceByIdReply { Succeeded = false };
+        }
+
+        public override async Task<RequestInvoiceByIdReply> GetInvoiceByBookingId(RequestInvoiceById request, ServerCallContext context)
+        {
+            var result = await _invoicesRepository.GetInvoiceByBookingIdAsync(request.Id);
             if (!result.Succeeded)
                 return new RequestInvoiceByIdReply { Succeeded = false };
 

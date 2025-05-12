@@ -9,7 +9,8 @@ package invoices;
 
 service InvoiceServiceContract {
   rpc CreateInvoice (RequestCreateInvoice) returns (CreateInvoiceReply);
-  rpc GetInvoiceById (RequestInvoiceById) returns (RequestInvoiceByIdReply);
+  rpc GetInvoiceByInvoiceId (RequestInvoiceById) returns (RequestInvoiceByIdReply);
+  rpc GetInvoiceByBookingId (RequestInvoiceById) returns (RequestInvoiceByIdReply);
   rpc GetAllInvoices (google.protobuf.Empty) returns (AllInvoicesReply);
   rpc UpdateInvoice (Invoice) returns (UpdateInvoiceReply);
   rpc DeleteInvoice (DeleteInvoiceByIdRequest) returns (DeleteInvoiceReply);
@@ -60,7 +61,7 @@ message CreateInvoiceReply {
 }
 
 message RequestInvoiceById {
-	string invoice_id = 1;
+	string id = 1;
 }
 
 message RequestInvoiceByIdReply {
