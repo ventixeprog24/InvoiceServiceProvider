@@ -78,7 +78,8 @@ Make sure you have an exact copy of the proto-file in the client application. Do
             BookingDate  = Timestamp.FromDateTime(DateTime.UtcNow),
             CreatedDate  = Timestamp.FromDateTime(DateTime.UtcNow),
             DueDate      = Timestamp.FromDateTime(DateTime.UtcNow.AddDays(30)),
-            Payed        = false
+            Paid         = true,
+            Deleted      = false
         };
         var updateReply = await client.UpdateInvoiceAsync(updateInvoice);
         Console.WriteLine($"UpdateInvoice succeeded? {updateReply.Succeeded}");
