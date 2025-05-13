@@ -52,7 +52,7 @@ namespace InvoiceServiceProvider.Factories
                 CreatedDate = TimeStampFactory.ToTimeStamp(entity.CreatedDate),
                 DueDate = TimeStampFactory.ToTimeStamp(entity.DueDate),
                 Paid = entity.Paid,
-                Active = entity.Active,
+                Deleted = entity.Deleted
             };
             return model;
         }

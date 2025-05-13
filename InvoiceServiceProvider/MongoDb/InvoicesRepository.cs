@@ -100,7 +100,8 @@ namespace InvoiceServiceProvider.MongoDb
                 if (invoiceToUpdate is null)
                     return new MongoResult { Succeeded = false };
 
-                invoiceToUpdate.Active = false;
+                invoiceToUpdate.Deleted = true;
+                invoiceToUpdate.BookingId = $"{invoiceToUpdate.BookingId}-{Guid.NewGuid()}";
 
                 var result = await _invoices.ReplaceOneAsync(i => i.Id == id, invoiceToUpdate);
                 if (result.IsAcknowledged && result.ModifiedCount > 0)

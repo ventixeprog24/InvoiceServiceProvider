@@ -21,6 +21,6 @@ namespace InvoiceServiceProvider.MongoDb
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public DateTime DueDate { get; set; } = DateTime.UtcNow.AddDays(7);
         public bool Paid { get; set; } = false;
-        public bool Active { get; set; } = true;
+        public bool Deleted { get; set; } = false;
     }
 }
