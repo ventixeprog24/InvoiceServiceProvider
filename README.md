@@ -1,3 +1,5 @@
+Partly AI Generated.
+
 # Invoice Service Provider
 
 ## How to use it
@@ -52,12 +54,18 @@ Make sure you have an exact copy of the proto-file in the client application. Do
             }
         }
 
-        // 4. List all invoices
-        var allReply = await client.GetAllInvoicesAsync(new Empty());
-        if (allReply.Succeeded)
-        {
-            Console.WriteLine($"Total invoices: {allReply.AllInvoices.Count}");
-        }
+        // 4. Call the GetAllInvoices RPC
+            var allReply = await client.GetAllInvoicesAsync(new Empty());
+
+            if (!allReply.Succeeded)
+            {
+                Console.Error.WriteLine("Failed to retrieve invoices.");
+                return;
+            }
+
+            var invoices = allReply.AllInvoices
+                                     .Select(InvoiceFactory.ToInvoiceViewModel)
+                                     .ToList();
 
         // 5. Update an invoice
         var updateInvoice = new Invoice
