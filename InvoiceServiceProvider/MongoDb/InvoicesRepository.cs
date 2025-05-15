@@ -74,7 +74,6 @@ namespace InvoiceServiceProvider.MongoDb
         {
             try
             {
-
                 var invoiceToUpdate = await _invoices.Find(i => i.Id == request.InvoiceId).FirstOrDefaultAsync();
                 if (invoiceToUpdate is null)
                     return new MongoResult { Succeeded = false };
