@@ -1,7 +1,11 @@
+using Azure.Storage.Blobs;
 using InvoiceServiceProvider.MongoDb;
 using InvoiceServiceProvider.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +25,12 @@ builder.Services.AddScoped(o =>
     return client.GetDatabase(options.DatabaseName);
 });
 
+var blobConn  = builder.Configuration["AzureBlobStorage:ConnectionString"];
+var container = builder.Configuration["AzureBlobStorage:ContainerName"];
+builder.Services.AddSingleton(_ => new BlobContainerClient(blobConn, container));
+
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
+builder.Services.AddScoped<IPdfService, PdfService>();
 
 var app = builder.Build();
 

@@ -5,9 +5,10 @@ using InvoiceServiceProvider.MongoDb;
 
 namespace InvoiceServiceProvider.Services
 {
-    public class InvoiceService(IInvoicesRepository invoicesRepository) : InvoiceServiceProvider.InvoiceServiceContract.InvoiceServiceContractBase
+    public class InvoiceService(IInvoicesRepository invoicesRepository, IPdfService pdfService) : InvoiceServiceProvider.InvoiceServiceContract.InvoiceServiceContractBase
     {
         private readonly IInvoicesRepository _invoicesRepository = invoicesRepository;
+        private readonly IPdfService _pdfService = pdfService;
 
         public override async Task<CreateInvoiceReply> CreateInvoice(RequestCreateInvoice request, ServerCallContext context)
         {
@@ -16,9 +17,13 @@ namespace InvoiceServiceProvider.Services
                 return new CreateInvoiceReply { Succeeded = false };
 
             var result = await _invoicesRepository.SaveInvoiceAsync(invoiceEntity);
-            return result.Succeeded
-                ? new CreateInvoiceReply { Succeeded = true }
-                : new CreateInvoiceReply { Succeeded = false };
+            if (!result.Succeeded)
+                return new CreateInvoiceReply { Succeeded = false };
+            
+            var pdfResult = await _pdfService.GeneratePdfAsync(invoiceEntity);
+            return (!pdfResult.Succeeded) 
+                    ? new CreateInvoiceReply { Succeeded = false } 
+                    : new CreateInvoiceReply { Succeeded = true };
         }
         public override async Task<RequestInvoiceByIdReply> GetInvoiceByInvoiceId(RequestInvoiceById request, ServerCallContext context)
         {
