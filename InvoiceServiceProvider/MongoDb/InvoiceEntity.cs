@@ -18,8 +18,8 @@ namespace InvoiceServiceProvider.MongoDb
         public double TicketPrice { get; set; }
         public double TotalPrice { get; set; }
         public DateTime BookingDate { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-        public DateTime DueDate { get; set; } = DateTime.UtcNow.AddDays(7);
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow.Date;
+        public DateTime DueDate { get; set; } = DateTime.UtcNow.AddDays(7).Date;
         public bool Paid { get; set; } = false;
         public bool Deleted { get; set; } = false;
     }

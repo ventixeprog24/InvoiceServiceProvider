@@ -6,14 +6,16 @@ namespace InvoiceServiceProvider.Factories
     {
         public static Timestamp ToTimeStamp(DateTime time)
         {
-            Timestamp timestamp = time.ToTimestamp();
+            DateTime date = time.Date;
+            Timestamp timestamp = date.ToTimestamp();
             return timestamp;
         }
 
         public static DateTime ToDateTime(Timestamp timestamp)
         {
-            DateTime dateTime = timestamp.ToDateTime();
-            return dateTime;
+            DateTime dateTime = timestamp.ToDateTime().ToUniversalTime();
+            DateTime dateOnly = dateTime.Date;
+            return dateOnly;
         }
     }
 }
