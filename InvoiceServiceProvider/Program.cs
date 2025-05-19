@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using InvoiceServiceProvider.Factories;
 using InvoiceServiceProvider.MongoDb;
 using InvoiceServiceProvider.Services;
 using Microsoft.Extensions.Options;
@@ -36,6 +37,7 @@ var blobConn  = builder.Configuration["AzureBlobStorage:ConnectionString"];
 var container = builder.Configuration["AzureBlobStorage:ContainerName"];
 builder.Services.AddSingleton(_ => new BlobContainerClient(blobConn, container));
 
+builder.Services.AddScoped<EmailFactory>();
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
 builder.Services.AddScoped<IPdfService, PdfService>();
 
