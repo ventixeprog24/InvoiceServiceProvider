@@ -61,7 +61,7 @@ public class InvoiceDocumentHelper(InvoiceEntity invoice) : IDocument
                     {
                         header.Cell().Text("Event").SemiBold();
                         header.Cell().Text("Event Date").SemiBold();
-                        header.Cell().AlignRight().Text("Qty").SemiBold();
+                        header.Cell().AlignRight().Text("Ticket Qty").SemiBold();
                         header.Cell().AlignRight().Text("Price").SemiBold();
                         header.Cell().AlignRight().Text("Total").SemiBold();
                     });
@@ -74,7 +74,7 @@ public class InvoiceDocumentHelper(InvoiceEntity invoice) : IDocument
                     
                     table.Footer(footer =>
                     {
-                        footer.Cell().ColumnSpan(3).AlignRight().Text("Total: ").Bold();
+                        footer.Cell().ColumnSpan(4).AlignRight().Text("Total: ").Bold();
                         footer.Cell().AlignRight().Text(_invoice.TotalPrice.ToString()).SemiBold();
                     });
                 });
