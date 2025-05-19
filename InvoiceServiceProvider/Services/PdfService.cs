@@ -30,7 +30,8 @@ public class PdfService(BlobContainerClient blobContainerClient) : IPdfService
         {
             var blobClient = _blobContainerClient.GetBlobClient(blobPath);
             await blobClient.UploadAsync(stream, overwrite: false, cancellationToken);
-            return new PdfServiceResult { Succeeded = true };
+            var uri = blobClient.Uri.ToString();
+            return new PdfServiceResult { Succeeded = true,  Uri = uri };
         }
         catch (Exception ex)
         {

@@ -25,4 +25,10 @@
     <PackageReference Include="QuestPDF" Version="2025.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Images\*.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

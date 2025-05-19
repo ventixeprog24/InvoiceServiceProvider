@@ -2,13 +2,16 @@
 using Grpc.Core;
 using InvoiceServiceProvider.Factories;
 using InvoiceServiceProvider.MongoDb;
+using EmailServiceClient = EmailServiceProvider.EmailServicer.EmailServicerClient;
 
 namespace InvoiceServiceProvider.Services
 {
-    public class InvoiceService(IInvoicesRepository invoicesRepository, IPdfService pdfService) : InvoiceServiceProvider.InvoiceServiceContract.InvoiceServiceContractBase
+    public class InvoiceService(IInvoicesRepository invoicesRepository, IPdfService pdfService, EmailServiceClient emailServiceClient) 
+        : InvoiceServiceContract.InvoiceServiceContractBase
     {
         private readonly IInvoicesRepository _invoicesRepository = invoicesRepository;
         private readonly IPdfService _pdfService = pdfService;
+        private readonly EmailServiceClient _emailServiceClient = emailServiceClient;
 
         public override async Task<CreateInvoiceReply> CreateInvoice(RequestCreateInvoice request, ServerCallContext context)
         {

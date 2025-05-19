@@ -19,15 +19,16 @@ public class InvoiceDocumentHelper(InvoiceEntity invoice) : IDocument
 
             page.Header().Row(row =>
             {
-                row.ConstantColumn(250)
+                row.ConstantItem(250)
                     .Column(column =>
                     {
+                        column.Item().Height(30).Svg("images/VentixeLogo.svg");
                         column.Item().Text("Ventixe").SemiBold().FontSize(18);
                         column.Item().Text("Valhallavägen 17");
                         column.Item().Text("Stockholm");
                     });
 
-                row.RelativeColumn().AlignRight().Column(column =>
+                row.RelativeItem().AlignRight().Column(column =>
                 {
                     column.Item().Text($"Invoice #: {_invoice.Id}").SemiBold();
                     column.Item().Text($"Date: {_invoice.CreatedDate:yyyy-MM-dd}");
@@ -60,9 +61,9 @@ public class InvoiceDocumentHelper(InvoiceEntity invoice) : IDocument
                     {
                         header.Cell().Text("Event").SemiBold();
                         header.Cell().Text("Event Date").SemiBold();
-                        header.Cell().Text("Qty").SemiBold();
-                        header.Cell().Text("Price").SemiBold();
-                        header.Cell().Text("Total").SemiBold();
+                        header.Cell().AlignRight().Text("Qty").SemiBold();
+                        header.Cell().AlignRight().Text("Price").SemiBold();
+                        header.Cell().AlignRight().Text("Total").SemiBold();
                     });
                     
                     table.Cell().Text(_invoice.EventName);
