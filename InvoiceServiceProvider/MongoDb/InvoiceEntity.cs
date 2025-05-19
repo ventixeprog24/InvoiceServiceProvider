@@ -14,9 +14,9 @@ namespace InvoiceServiceProvider.MongoDb
         public string City { get; set; } = null!;
         public string EventName { get; set; } = null!;
         public DateTime EventDate { get; set; }
-        public double TicketAmount { get; set; }
-        public double TicketPrice { get; set; }
-        public double TotalPrice { get; set; }
+        public decimal TicketAmount { get; set; }
+        public decimal TicketPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public DateTime BookingDate { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow.Date;
         public DateTime DueDate { get; set; } = DateTime.UtcNow.AddDays(7).Date;

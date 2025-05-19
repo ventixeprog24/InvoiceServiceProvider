@@ -30,8 +30,14 @@ public class InvoiceFactory_Tests
             TicketPrice  = 120.5
         };
         var expectedEventDate   = TimeStampFactory.ToDateTime(eventTs);
-        var expectedBookingDate = TimeStampFactory.ToDateTime(bookingTs);
-        var expectedTotalPrice  = request.TicketAmount * request.TicketPrice;
+        var expectedBookingDate = TimeStampFactory.ToDateTime(bookingTs); 
+        var ticketAmountDecimal = Convert.ToDecimal(request.TicketAmount);
+        var ticketAmountNoDecimals = Math.Round(ticketAmountDecimal, 0);
+        var ticketPriceDecimal = Convert.ToDecimal(request.TicketPrice);
+        var ticketPriceTwoDecimals = Math.Round(ticketPriceDecimal, 2);
+        var expectedTotalPrice  = ticketAmountNoDecimals * ticketPriceTwoDecimals;
+        var expectedPriceTwoDecimals = Math.Round(expectedTotalPrice, 2);
+        
 
         // Act
         var entity = InvoiceFactory.ToInvoiceEntity(request);
@@ -49,9 +55,9 @@ public class InvoiceFactory_Tests
         Assert.Equal(request.EventName,    entity.EventName);
         Assert.Equal(expectedEventDate,   entity.EventDate);
         Assert.Equal(expectedBookingDate, entity.BookingDate);
-        Assert.Equal(request.TicketAmount,    entity.TicketAmount);
-        Assert.Equal(request.TicketPrice,     entity.TicketPrice);
-        Assert.Equal(expectedTotalPrice,  entity.TotalPrice);
+        Assert.Equal(ticketAmountNoDecimals,    entity.TicketAmount);
+        Assert.Equal(ticketPriceTwoDecimals,     entity.TicketPrice);
+        Assert.Equal(expectedPriceTwoDecimals,  entity.TotalPrice);
     }
 
     [Fact]
@@ -96,6 +102,13 @@ public class InvoiceFactory_Tests
             var expBookingTs = TimeStampFactory.ToTimeStamp(entity.BookingDate);
             var expCreatedTs = TimeStampFactory.ToTimeStamp(entity.CreatedDate);
             var expDueTs     = TimeStampFactory.ToTimeStamp(entity.DueDate);
+            
+            var ticketAmountDouble = Convert.ToDouble(entity.TicketAmount);
+            var ticketAmountNoDecimals = Math.Round(ticketAmountDouble, 0);
+            var ticketPriceDouble = Convert.ToDouble(entity.TicketPrice);
+            var ticketPriceTwoDoubles = Math.Round(ticketPriceDouble, 2);
+            var expectedTotalPrice  = ticketAmountNoDecimals * ticketPriceTwoDoubles;
+            var expectedPriceTwoDecimals = Math.Round(expectedTotalPrice, 2);
 
             // Act
             var model = InvoiceFactory.ToInvoiceGrpcModel(entity);
@@ -113,9 +126,9 @@ public class InvoiceFactory_Tests
             Assert.Equal(entity.City,         model.City);
             Assert.Equal(entity.EventName,    model.EventName);
             Assert.Equal(expEventTs,          model.EventDate);
-            Assert.Equal(entity.TicketAmount, model.TicketAmount);
-            Assert.Equal(entity.TicketPrice,  model.TicketPrice);
-            Assert.Equal(entity.TotalPrice,   model.TotalPrice);
+            Assert.Equal(ticketAmountNoDecimals, model.TicketAmount);
+            Assert.Equal(ticketPriceTwoDoubles,  model.TicketPrice);
+            Assert.Equal(expectedPriceTwoDecimals,   model.TotalPrice);
             Assert.Equal(expBookingTs,        model.BookingDate);
             Assert.Equal(expCreatedTs,        model.CreatedDate);
             Assert.Equal(expDueTs,            model.DueDate);

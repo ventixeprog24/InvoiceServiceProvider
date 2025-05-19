@@ -9,6 +9,15 @@ namespace InvoiceServiceProvider.Factories
             if (request is null)
                 return null;
 
+            var ticketAmountDecimal = Convert.ToDecimal(request.TicketAmount);
+            var ticketAmountNoDecimals = Math.Round(ticketAmountDecimal, 0);
+            
+            var ticketPriceDecimal = Convert.ToDecimal(request.TicketPrice);
+            var ticketPriceTwoDecimals = Math.Round(ticketPriceDecimal, 2);
+            
+            var totalPriceDecimal = ticketAmountNoDecimals * ticketPriceTwoDecimals;
+            var totalPriceTwoDecimals = Math.Round(totalPriceDecimal, 2);
+
             InvoiceEntity newEntity = new()
             {
                 BookingId = request.BookingId,
@@ -20,9 +29,9 @@ namespace InvoiceServiceProvider.Factories
                 City = request.City,
                 EventName = request.EventName,
                 EventDate = TimeStampFactory.ToDateTime(request.EventDate),
-                TicketAmount = request.TicketAmount,
-                TicketPrice = request.TicketPrice,
-                TotalPrice = request.TicketAmount * request.TicketPrice,
+                TicketAmount = ticketAmountNoDecimals,
+                TicketPrice = ticketPriceTwoDecimals,
+                TotalPrice = totalPriceTwoDecimals,
                 BookingDate = TimeStampFactory.ToDateTime(request.BookingDate)
             };
             return newEntity;
@@ -32,6 +41,16 @@ namespace InvoiceServiceProvider.Factories
         {
             if (entity is null)
                 return null;
+            
+            var ticketAmountDouble = Convert.ToDouble(entity.TicketAmount);
+            var ticketAmountNoDecimals = Math.Round(ticketAmountDouble, 0);
+            
+            var ticketPriceDouble = Convert.ToDouble(entity.TicketPrice);
+            var ticketPriceTwoDecimals = Math.Round(ticketPriceDouble, 2);
+            
+            var totalPriceDouble = ticketAmountNoDecimals * ticketPriceTwoDecimals;
+            var totalPriceTwoDecimals = Math.Round(totalPriceDouble, 2);
+            
 
             Invoice model = new()
             {
@@ -45,9 +64,9 @@ namespace InvoiceServiceProvider.Factories
                 City = entity.City,
                 EventName = entity.EventName,
                 EventDate = TimeStampFactory.ToTimeStamp(entity.EventDate),
-                TicketAmount = entity.TicketAmount,
-                TicketPrice = entity.TicketPrice,
-                TotalPrice = entity.TotalPrice,
+                TicketAmount = ticketAmountNoDecimals,
+                TicketPrice = ticketPriceTwoDecimals,
+                TotalPrice = totalPriceTwoDecimals,
                 BookingDate = TimeStampFactory.ToTimeStamp(entity.BookingDate),
                 CreatedDate = TimeStampFactory.ToTimeStamp(entity.CreatedDate),
                 DueDate = TimeStampFactory.ToTimeStamp(entity.DueDate),
