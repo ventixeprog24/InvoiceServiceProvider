@@ -40,6 +40,7 @@ public class EmailFactory(IConfiguration configuration)
                           <p>We hope that you are excited about the upcoming event. Here are the payment details:</p>
 
                           <p>Total amount: {invoice.TotalPrice.ToString()}</p>
+                          <p>Payment reference: {invoice.Id}</p>
                           <p>To account number: 555.5555.555</p>
                           <p>Bank: Österreichische Alpenland Bank AG</p>
                           <p>Account number: AT65 12345 98765432101</p>
