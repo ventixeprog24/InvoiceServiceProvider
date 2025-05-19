@@ -1,7 +1,13 @@
+using Azure.Storage.Blobs;
 using InvoiceServiceProvider.MongoDb;
 using InvoiceServiceProvider.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using QuestPDF;
+using QuestPDF.Infrastructure;
+using EmailServiceClient = EmailServiceProvider.EmailServicer.EmailServicerClient;
+
+Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +27,17 @@ builder.Services.AddScoped(o =>
     return client.GetDatabase(options.DatabaseName);
 });
 
+builder.Services.AddGrpcClient<EmailServiceClient>(o =>
+{
+    o.Address = new Uri(builder.Configuration["Grpc:EmailServiceProvider"] ?? "Could not fetch emailservice url");
+});
+
+var blobConn  = builder.Configuration["AzureBlobStorage:ConnectionString"];
+var container = builder.Configuration["AzureBlobStorage:ContainerName"];
+builder.Services.AddSingleton(_ => new BlobContainerClient(blobConn, container));
+
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
+builder.Services.AddScoped<IPdfService, PdfService>();
 
 var app = builder.Build();
 

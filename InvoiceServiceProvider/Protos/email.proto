@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "EmailServiceProvider";
+
+package email;
+
+service EmailServicer {
+  rpc SendEmail (EmailRequest) returns(EmailReply);
+}
+
+message EmailRequest {
+  repeated string recipients = 1;
+  string senderAddress = 2;
+  string subject = 3;
+  string plainText = 4;
+  string html = 5;
+}
+
+message EmailReply{
+  bool succeeded = 1;
+  string result = 2;
+
+}
