@@ -32,7 +32,6 @@ public class InvoiceDocumentHelper(InvoiceEntity invoice) : IDocument
                 {
                     column.Item().Text($"Invoice #: {_invoice.Id}").SemiBold();
                     column.Item().Text($"Date: {_invoice.CreatedDate:yyyy-MM-dd}");
-                    column.Item().Text($"Due Date: {_invoice.DueDate:yyyy-MM-dd}");
                     column.Item().Text($"Booking Id: {_invoice.BookingId}");
                     column.Item().Text($"Name: {_invoice.FirstName} {_invoice.LastName}").SemiBold();
                     column.Item().Text($"Address: {_invoice.Address}");
@@ -52,7 +51,7 @@ public class InvoiceDocumentHelper(InvoiceEntity invoice) : IDocument
                     {
                         columns.RelativeColumn();
                         columns.RelativeColumn();
-                        columns.ConstantColumn(50);
+                        columns.RelativeColumn();
                         columns.ConstantColumn(80);
                         columns.ConstantColumn(80);
                     });
@@ -78,6 +77,21 @@ public class InvoiceDocumentHelper(InvoiceEntity invoice) : IDocument
                         footer.Cell().AlignRight().Text(_invoice.TotalPrice.ToString()).SemiBold();
                     });
                 });
+            });
+            
+            page.Footer().Row(row =>
+            {
+                row.RelativeItem()
+                    .Column(column =>
+                    {
+                        column.Item().Text("Payment Information").SemiBold();
+                        column.Item().Text($"Due Date: {_invoice.DueDate:yyyy-MM-dd}");
+                        column.Item().Text($"Payment reference: {_invoice.Id}");
+                        column.Item().Text($"Payment Amount: {_invoice.TotalPrice}");
+                        column.Item().Text("Bank: Österreichische Alpenland Bank AG");
+                        column.Item().Text("Account number: AT65 12345 98765432101");
+                        column.Item().Text("Account owner: Ventixe Österreichische Stiftung für diskrete Kapitalverflechtung (ÖSDK)");
+                    });
             });
         });
     }

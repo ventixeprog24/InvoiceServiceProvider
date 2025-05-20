@@ -33,15 +33,14 @@ public class EmailFactory(IConfiguration configuration)
                       <meta charset=""UTF-8"">
                       <title>Thank You for Your Purchase</title>
                     </head>
-                    <body style='margin:0; padding:32px; font-family: sans-serif; background-color: #F7F7F7; color:#1E1E20;'>
-                        <div style='max-width: 660px; margin: 32px auto; background: #FFFFFF; border-radius: 16px; padding: 32px;'>
+                    <body style='margin:0; padding:32px; font-family: sans-serif; background-color: #F7F7F7; color:#ffffff;'>
+                        <div style='max-width: 660px; margin: 32px auto; background: #000000; border-radius: 16px; padding: 32px; '>
                           <h1>Congratulations on your purchase!</h1>
 
                           <p>We hope that you are excited about the upcoming event. Here are the payment details:</p>
 
-                          <p>Total amount: {invoice.TotalPrice.ToString()}</p>
+                          <p>Total amount: €{invoice.TotalPrice.ToString()}</p>
                           <p>Payment reference: {invoice.Id}</p>
-                          <p>To account number: 555.5555.555</p>
                           <p>Bank: Österreichische Alpenland Bank AG</p>
                           <p>Account number: AT65 12345 98765432101</p>
                           <p>Account owner: Ventixe Österreichische Stiftung für diskrete Kapitalverflechtung (ÖSDK)</p>

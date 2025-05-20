@@ -19,15 +19,14 @@ public class PdfService(BlobContainerClient blobContainerClient) : IPdfService
 
         if (document is null)
             return new PdfServiceResult { Succeeded = false, Message = "Failed to generate PDF" };
-        
-        await using var stream = new MemoryStream();
-        await Task.Run(() => document.GeneratePdf(stream), cancellationToken);
-        stream.Position = 0;
-        
-        var blobPath = $"{invoice.Id}.pdf";
 
         try
         {
+            await using var stream = new MemoryStream();
+            await Task.Run(() => document.GeneratePdf(stream), cancellationToken);
+            stream.Position = 0;
+
+            var blobPath = $"{invoice.Id}.pdf";
             var blobClient = _blobContainerClient.GetBlobClient(blobPath);
             await blobClient.UploadAsync(stream, overwrite: false, cancellationToken);
             var uri = blobClient.Uri.ToString();
