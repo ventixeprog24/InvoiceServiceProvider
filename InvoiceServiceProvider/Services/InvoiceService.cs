@@ -17,7 +17,7 @@ namespace InvoiceServiceProvider.Services
         public override async Task<CreateInvoiceReply> CreateInvoice(RequestCreateInvoice request, ServerCallContext context)
         {
             var invoiceEntity = InvoiceFactory.ToInvoiceEntity(request);
-            if (invoiceEntity == null)
+            if (invoiceEntity is null)
                 return new CreateInvoiceReply { Succeeded = false };
 
             var result = await _invoicesRepository.SaveInvoiceAsync(invoiceEntity);
@@ -41,6 +41,40 @@ namespace InvoiceServiceProvider.Services
                 return new CreateInvoiceReply { Succeeded = false };
             }
         }
+        
+        public async Task<CreateInvoiceReply> CreateInvoiceFromServiceBus(RequestCreateInvoice request)
+        {
+            var invoiceEntity = InvoiceFactory.ToInvoiceEntity(request);
+            if (invoiceEntity is null)
+                return new CreateInvoiceReply { Succeeded = false };
+
+            var result = await _invoicesRepository.SaveInvoiceAsync(invoiceEntity);
+            if (!result.Succeeded)
+                return new CreateInvoiceReply { Succeeded = false };
+            
+            var pdfResult = await _pdfService.GeneratePdfAsync(invoiceEntity);
+            if (!pdfResult.Succeeded || string.IsNullOrWhiteSpace(pdfResult.Uri))
+            {
+                await _invoicesRepository.HardDeleteFromDbAsync(invoiceEntity.Id);
+                return  new CreateInvoiceReply { Succeeded = false };
+            }
+
+            try
+            {
+                var emailRequest = _emailFactory.CreateEmailRequest(invoiceEntity, pdfResult.Uri);
+                var emailResult =  await _emailServiceClient.SendEmailAsync(emailRequest);
+                if (emailResult.Succeeded)
+                    return new CreateInvoiceReply { Succeeded = true };
+                
+                await _invoicesRepository.HardDeleteFromDbAsync(invoiceEntity.Id);
+                return new CreateInvoiceReply { Succeeded = false };
+            }
+            catch (Exception ex)
+            {
+                return new CreateInvoiceReply { Succeeded = false };
+            }
+        }
+        
         public override async Task<RequestInvoiceByIdReply> GetInvoiceByInvoiceId(RequestInvoiceById request, ServerCallContext context)
         {
             var result = await _invoicesRepository.GetInvoiceByInvoiceIdAsync(request.Id);

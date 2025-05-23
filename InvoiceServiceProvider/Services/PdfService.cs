@@ -28,7 +28,7 @@ public class PdfService(BlobContainerClient blobContainerClient) : IPdfService
 
             var blobPath = $"{invoice.Id}.pdf";
             var blobClient = _blobContainerClient.GetBlobClient(blobPath);
-            await blobClient.UploadAsync(stream, overwrite: false, cancellationToken);
+            await blobClient.UploadAsync(stream, overwrite: true, cancellationToken);
             var uri = blobClient.Uri.ToString();
             return new PdfServiceResult { Succeeded = true,  Uri = uri };
         }
