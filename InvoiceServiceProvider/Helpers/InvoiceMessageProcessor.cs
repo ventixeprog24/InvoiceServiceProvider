@@ -30,6 +30,7 @@ public class InvoiceMessageProcessor : IHostedService
         });
 
         _serviceBusProcessor.ProcessMessageAsync += ProcessMessageHandler;
+        _serviceBusProcessor.ProcessErrorAsync += ProcessErrorAsync;
         
         return _serviceBusProcessor.StartProcessingAsync(cancellationToken);
     }
@@ -68,5 +69,9 @@ public class InvoiceMessageProcessor : IHostedService
             throw new InvalidOperationException("Invoice creation failed");
         
         await args.CompleteMessageAsync(args.Message);
+    }
+
+    private async Task ProcessErrorAsync(ProcessErrorEventArgs args)
+    {
     }
 }

@@ -32,14 +32,14 @@ builder.Services.AddScoped(o =>
 
 builder.Services.AddGrpcClient<EmailServiceClient>(o =>
 {
-    o.Address = new Uri(builder.Configuration["Grpc:EmailServiceProvider"] ?? "Could not fetch emailservice url");
+    o.Address = new Uri(builder.Configuration["Grpc:EmailServiceProvider"]!);
 });
 
-var blobConn  = builder.Configuration["AzureBlobStorage:ConnectionString"];
-var container = builder.Configuration["AzureBlobStorage:ContainerName"];
+var blobConn  = builder.Configuration.GetConnectionString("BlobStorage");
+var container = builder.Configuration["BlobStorage:ContainerName"];
 builder.Services.AddSingleton(_ => new BlobContainerClient(blobConn, container));
 
-builder.Services.AddSingleton(service => new ServiceBusClient(builder.Configuration["ServiceBus:ConnectionString"]));
+builder.Services.AddSingleton(service => new ServiceBusClient(builder.Configuration.GetConnectionString("ServiceBus")));
 builder.Services.AddHostedService<InvoiceMessageProcessor>();
 
 builder.Services.AddScoped<EmailFactory>();
