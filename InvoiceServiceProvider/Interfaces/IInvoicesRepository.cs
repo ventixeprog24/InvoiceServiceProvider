@@ -10,4 +10,5 @@ public interface IInvoicesRepository
     Task<MongoResult> GetAllAsync();
     Task<MongoResult> UpdateAsync(UpdatePaymentStatusRequest request);
     Task<MongoResult> DeleteAsync(string id);
+    Task<MongoResult> HardDeleteFromDbAsync(string id);
 }

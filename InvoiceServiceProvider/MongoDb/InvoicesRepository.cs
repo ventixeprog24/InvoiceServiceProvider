@@ -95,20 +95,34 @@ namespace InvoiceServiceProvider.MongoDb
         {
             try
             {
-                var invoiceToUpdate = await _invoices.Find(i => i.Id == id).FirstOrDefaultAsync();
-                if (invoiceToUpdate is null)
+                var invoiceToDelete = await _invoices.Find(i => i.Id == id).FirstOrDefaultAsync();
+                if (invoiceToDelete is null)
                     return new MongoResult { Succeeded = false };
 
-                invoiceToUpdate.Deleted = true;
-                invoiceToUpdate.BookingId = $"{invoiceToUpdate.BookingId}-{Guid.NewGuid()}";
+                invoiceToDelete.Deleted = true;
+                invoiceToDelete.BookingId = $"{invoiceToDelete.BookingId}-{Guid.NewGuid()}";
 
-                var result = await _invoices.ReplaceOneAsync(i => i.Id == id, invoiceToUpdate);
+                var result = await _invoices.ReplaceOneAsync(i => i.Id == id, invoiceToDelete);
                 if (result.IsAcknowledged && result.ModifiedCount > 0)
                     return new MongoResult { Succeeded = true };
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+            }
+            return new MongoResult { Succeeded = false };
+        }
+
+        public async Task<MongoResult> HardDeleteFromDbAsync(string id)
+        {
+            try
+            {
+                await _invoices.DeleteOneAsync(i => i.Id == id);
+                return new MongoResult { Succeeded = true };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
             return new MongoResult { Succeeded = false };
         }
