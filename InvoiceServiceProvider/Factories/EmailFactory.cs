@@ -33,8 +33,8 @@ public class EmailFactory(IConfiguration configuration)
                       <meta charset=""UTF-8"">
                       <title>Thank You for Your Purchase</title>
                     </head>
-                    <body style='margin:0; padding:32px; font-family: sans-serif; background-color: #F7F7F7 important; color: #ffffff important;'>
-                        <div style='max-width: 660px; margin: 32px auto; background: #000000 important; border-radius: 16px; padding: 32px; '>
+                    <body style='margin:0; padding:32px; font-family: sans-serif; background-color: #F7F7F7 !important; color: #ffffff !important;'>
+                        <div style='max-width: 660px; margin: 32px auto; background: #000000 !important; border-radius: 16px; padding: 32px; '>
                           <h1>Congratulations on your purchase!</h1>
 
                           <p>We hope that you are excited about the upcoming event. Here are the payment details:</p>
@@ -46,7 +46,7 @@ public class EmailFactory(IConfiguration configuration)
                           <p>Account owner: Ventixe Österreichische Stiftung für diskrete Kapitalverflechtung (ÖSDK)</p>
 
                           <p>Do you want your invoice as a PDF?</p>
-                          <a href=""{invoiceUri}"" style='display: inline-block; color: #39393D important; border: 1px solid transparent; background-color: #F26CF9 important;
+                          <a href=""{invoiceUri}"" style='display: inline-block; color: #39393D !important; border: 1px solid transparent; background-color: #F26CF9 !important;
                             border-radius: 25px; padding: 0.9rem 1.5rem; font-size: 14px; font-weight: 500; cursor: pointer; 
                             text-decoration: none;'>Download Invoice</a>
                         </div>
