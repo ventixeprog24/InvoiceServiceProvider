@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Azure.Messaging.ServiceBus;
+﻿using Azure.Messaging.ServiceBus;
 using InvoiceServiceProvider.Services;
 
 namespace InvoiceServiceProvider.Helpers;
@@ -71,7 +70,8 @@ public class InvoiceMessageProcessor : IHostedService
         await args.CompleteMessageAsync(args.Message);
     }
 
-    private async Task ProcessErrorAsync(ProcessErrorEventArgs args)
+    private Task ProcessErrorAsync(ProcessErrorEventArgs args)
     {
+        return Task.CompletedTask;
     }
 }
