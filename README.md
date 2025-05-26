@@ -2,7 +2,7 @@ Partly AI Generated.
 
 # Invoice Service Provider
 
-This Microservice will generate and create invoices, save them to a NoSql-database (MongoDb) with full CRUD functionality. Upon the creation of an invoice, this service will also create a PDF invoice that is stored on Azure Blob Storage and send an email to the person making a booking that will generate an invoice.
+This Microservice will generate and create invoices, save them to a NoSql-database (MongoDb) with full CRUD functionality. Upon the creation of an invoice, this service will also create a PDF invoice that is stored on Azure Blob Storage and send an email (via the email service) to the person making a booking.
 
 This Microservice is also connected to an Azure Service Bus Queue listening for messages which enables a smoother transaction between the Booking service and the creation of invoices.
 
