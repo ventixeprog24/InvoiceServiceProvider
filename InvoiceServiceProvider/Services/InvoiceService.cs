@@ -16,6 +16,9 @@ namespace InvoiceServiceProvider.Services
 
         public override async Task<CreateInvoiceReply> CreateInvoice(RequestCreateInvoice request, ServerCallContext context)
         {
+            if (request is null)
+                return new CreateInvoiceReply { Succeeded = false };
+            
             var invoiceEntity = InvoiceFactory.ToInvoiceEntity(request);
             if (invoiceEntity is null)
                 return new CreateInvoiceReply { Succeeded = false };
@@ -44,6 +47,9 @@ namespace InvoiceServiceProvider.Services
         
         public async Task<CreateInvoiceReply> CreateInvoiceFromServiceBus(RequestCreateInvoice request)
         {
+            if (request is null)
+                return new CreateInvoiceReply { Succeeded = false };
+            
             var invoiceEntity = InvoiceFactory.ToInvoiceEntity(request);
             if (invoiceEntity is null)
                 return new CreateInvoiceReply { Succeeded = false };
@@ -77,6 +83,9 @@ namespace InvoiceServiceProvider.Services
         
         public override async Task<RequestInvoiceByIdReply> GetInvoiceByInvoiceId(RequestInvoiceById request, ServerCallContext context)
         {
+            if (request is null)
+                return new RequestInvoiceByIdReply { Succeeded = false };
+            
             var result = await _invoicesRepository.GetInvoiceByInvoiceIdAsync(request.Id);
             if (!result.Succeeded)
                 return new RequestInvoiceByIdReply { Succeeded = false };
@@ -89,6 +98,9 @@ namespace InvoiceServiceProvider.Services
 
         public override async Task<RequestInvoiceByIdReply> GetInvoiceByBookingId(RequestInvoiceById request, ServerCallContext context)
         {
+            if (request is null || string.IsNullOrWhiteSpace(request.Id))
+                return new RequestInvoiceByIdReply { Succeeded = false };
+            
             var result = await _invoicesRepository.GetInvoiceByBookingIdAsync(request.Id);
             if (!result.Succeeded)
                 return new RequestInvoiceByIdReply { Succeeded = false };
@@ -116,7 +128,7 @@ namespace InvoiceServiceProvider.Services
 
         public override async Task<UpdateInvoiceReply> UpdateInvoice(UpdatePaymentStatusRequest request, ServerCallContext context)
         {
-            if (request is null)
+            if (request is null || string.IsNullOrWhiteSpace(request.InvoiceId))
                 return new UpdateInvoiceReply { Succeeded = false };
 
             var updateResult = await _invoicesRepository.UpdateAsync(request);
@@ -127,7 +139,7 @@ namespace InvoiceServiceProvider.Services
 
         public override async Task<DeleteInvoiceReply> DeleteInvoice(DeleteInvoiceByIdRequest request, ServerCallContext context)
         {
-            if (request is null)
+            if (request is null || string.IsNullOrWhiteSpace(request.InvoiceId))
                 return new DeleteInvoiceReply { Succeeded = false };
 
             var deleteResult = await _invoicesRepository.DeleteAsync(request.InvoiceId);
