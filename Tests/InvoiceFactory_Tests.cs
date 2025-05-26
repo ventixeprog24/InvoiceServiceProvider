@@ -2,6 +2,7 @@
 using InvoiceServiceProvider;
 using InvoiceServiceProvider.Factories;
 using InvoiceServiceProvider.MongoDb;
+using static InvoiceServiceProvider.Factories.InvoiceFactory;
 
 namespace Tests;
 
@@ -40,7 +41,7 @@ public class InvoiceFactory_Tests
         
 
         // Act
-        var entity = InvoiceFactory.ToInvoiceEntity(request);
+        var entity = ToInvoiceEntity(request);
 
         // Assert
         Assert.NotNull(entity);
@@ -64,7 +65,7 @@ public class InvoiceFactory_Tests
     public void ToInvoiceEntity_ShouldReturnNull_WithInvalidInput()
     {
         //Act
-        var result = InvoiceFactory.ToInvoiceEntity(null!);
+        var result = ToInvoiceEntity(null!);
         
         //Assert
         Assert.Null(result);
@@ -83,6 +84,7 @@ public class InvoiceFactory_Tests
                 FirstName    = "Alice",
                 LastName     = "Smith",
                 PhoneNumber  = "555-0200",
+                Email        = "test@domain.com",
                 Address      = "2 Sample Ave",
                 PostalCode   = "67890",
                 City         = "Exampletown",
@@ -111,7 +113,7 @@ public class InvoiceFactory_Tests
             var expectedPriceTwoDecimals = Math.Round(expectedTotalPrice, 2);
 
             // Act
-            var model = InvoiceFactory.ToInvoiceGrpcModel(entity);
+            var model = ToInvoiceGrpcModel(entity);
 
             // Assert
             Assert.NotNull(model);
@@ -121,6 +123,7 @@ public class InvoiceFactory_Tests
             Assert.Equal(entity.FirstName,    model.FirstName);
             Assert.Equal(entity.LastName,     model.LastName);
             Assert.Equal(entity.PhoneNumber,  model.PhoneNumber);
+            Assert.Equal(entity.Email,        model.Email);
             Assert.Equal(entity.Address,      model.Address);
             Assert.Equal(entity.PostalCode,   model.PostalCode);
             Assert.Equal(entity.City,         model.City);
@@ -140,7 +143,7 @@ public class InvoiceFactory_Tests
     public void ToInvoiceGrpcModel_ShouldReturnNull_WithInalidInput()
     {
         //Act
-        var result =  InvoiceFactory.ToInvoiceGrpcModel(null!);
+        var result =  ToInvoiceGrpcModel(null!);
         
         //Assert
         Assert.Null(result);

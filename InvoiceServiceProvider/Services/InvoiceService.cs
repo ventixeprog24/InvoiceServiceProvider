@@ -7,7 +7,7 @@ using EmailServiceClient = EmailServiceProvider.EmailServicer.EmailServicerClien
 namespace InvoiceServiceProvider.Services
 {
     public class InvoiceService(IInvoicesRepository invoicesRepository, IPdfService pdfService, EmailServiceClient emailServiceClient,
-        EmailFactory emailFactory) : InvoiceServiceContract.InvoiceServiceContractBase
+        EmailFactory emailFactory ) : InvoiceServiceContract.InvoiceServiceContractBase
     {
         private readonly IInvoicesRepository _invoicesRepository = invoicesRepository;
         private readonly IPdfService _pdfService = pdfService;

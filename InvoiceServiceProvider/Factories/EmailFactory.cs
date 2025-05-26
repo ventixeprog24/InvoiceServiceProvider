@@ -3,9 +3,14 @@ using InvoiceServiceProvider.MongoDb;
 
 namespace InvoiceServiceProvider.Factories;
 
-public class EmailFactory(IConfiguration configuration)
+public class EmailFactory
 {
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IConfiguration _configuration;
+
+    public EmailFactory(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
     
     public EmailRequest CreateEmailRequest(InvoiceEntity invoice, string invoiceUri)
     {
